@@ -1,0 +1,31 @@
+name: Rust CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.85.0 # Enforce target Rust 1.85
+          components: clippy, rustfmt
+      - name: Default Check
+        run: cargo check --verbose
+      - name: All Features Check
+        run: cargo check --all-features --verbose
+      - name: Tests
+        run: cargo test --all-features --verbose
+      - name: Clippy
+        run: cargo clippy --all-features -- -D warnings
+      - name: Format
+        run: cargo fmt -- --check

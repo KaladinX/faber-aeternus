@@ -1,0 +1,17 @@
+faber-aeternus/
+├── Cargo.toml
+├── src/
+│   ├── main.rs
+│   ├── lib.rs
+│   ├── cli.rs
+│   ├── tui/
+│   │   └── app.rs
+│   ├── llm/
+│   │   └── provider.rs
+│   ├── tools/
+│   │   └── registry.rs
+│   ├── sandbox.rs
+│   ├── context.rs
+│   └── state.rs
+├── README.md
+└── .gitignore

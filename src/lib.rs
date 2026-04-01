@@ -10,3 +10,4 @@ pub use llm::provider::LLMProvider;
 pub use tools::registry::ToolRegistry;
 pub use state::AppState;
 pub use sandbox::SandboxExecutor;
+pub use tui::app::run_tui;

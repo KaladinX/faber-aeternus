@@ -2,6 +2,7 @@
 use serde_json::Value;
 use std::collections::HashMap;
 use crate::sandbox::SandboxExecutor;
+use crate::state::snapshot::SnapshotManager;
 use anyhow::{Context, Result};
 
 #[derive(Clone, Debug, PartialEq, PartialOrd)]
@@ -20,17 +21,21 @@ pub struct Tool {
     pub requires_approval: bool,
 }
 
+#[derive(Clone)]
 pub struct ToolRegistry {
     tools: HashMap<String, Tool>,
     sandbox: SandboxExecutor,
+    snapshots: SnapshotManager,
 }
 
 impl ToolRegistry {
     pub fn new() -> Result<Self> {
         let sandbox = SandboxExecutor::new()?;
+        let snapshots = SnapshotManager::new()?;
         let mut registry = Self {
             tools: HashMap::new(),
             sandbox,
+            snapshots,
         };
         registry.register_core_tools();
         Ok(registry)
@@ -93,11 +98,9 @@ impl ToolRegistry {
     }
 
     pub async fn execute(&self, name: &str, params: Value) -> Result<String> {
-        let tool = self.get_tool(name).context("unknown tool")?;
-
-        if tool.requires_approval && tool.permission_level != ToolPermissionLevel::Low {
-            println!("🔒 [Permission] {} ({:?}) — auto-approved for demo", name, tool.permission_level);
-        }
+        // Find tool
+        // Error on unknown
+        let _tool = self.get_tool(name).context("unknown tool")?;
 
         match name {
             "run_shell" => {
@@ -108,7 +111,22 @@ impl ToolRegistry {
                     .unwrap_or_default();
                 self.sandbox.execute(command, &args)
             }
-            _ => Ok(format!("Tool '{name}' executed (full impl coming next)")),
+            "edit_file" => {
+                let path = params["path"].as_str().context("missing path")?;
+                let content = params["diff"].as_str().context("missing diff")?;
+                let p = std::path::Path::new(path);
+                
+                let backup = self.snapshots.create_snapshot(p)?;
+                std::fs::write(p, content)?;
+                Ok(format!("File {} updated. Reversible snapshot created at {:?}", path, backup))
+            }
+            "read_file" => {
+                let path = params["path"].as_str().context("missing path")?;
+                let p = std::path::Path::new(path);
+                let content = std::fs::read_to_string(p)?;
+                Ok(content)
+            }
+            _ => Ok(format!("Tool '{name}' not fully implemented.")),
         }
     }
 }

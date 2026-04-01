@@ -23,7 +23,7 @@ impl LLMProvider for CandleProvider {
     async fn generate_stream(
         &self,
         _system_prompt: &str,
-        _chat_history: &[crate::state::Message],
+        _chat_history: &std::collections::VecDeque<String>,
     ) -> Result<BoxStream<'static, Result<String>>> {
         // Loads model into memory safely via candle-core locally.
         let stream = stream::iter(vec![

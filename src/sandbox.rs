@@ -3,6 +3,7 @@ use std::process::Command;
 use anyhow::{Context, Result};
 use tracing::{info, warn};
 
+#[derive(Clone)]
 pub struct SandboxExecutor {
     strict_mode: bool,
     bwrap_available: bool,

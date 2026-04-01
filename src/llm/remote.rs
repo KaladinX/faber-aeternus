@@ -2,13 +2,12 @@ use anyhow::Result;
 use async_trait::async_trait;
 use futures::stream::{self, BoxStream, StreamExt};
 use reqwest::Client;
-use std::pin::Pin;
 
 use crate::llm::provider::{LLMProvider, ProviderConfig};
 
 pub struct RemoteProvider {
     pub config: ProviderConfig,
-    _client: Client,
+    client: reqwest:: Client,
 }
 
 impl RemoteProvider {

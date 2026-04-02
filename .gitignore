@@ -1,6 +1,29 @@
+# Build
 /target
 **/*.rs.bk
-Cargo.lock
+
+# Secrets and config
 .env
+.env.*
+.faber.toml
+*.pem
+*.key
+*.p12
+id_rsa*
+
+# Snapshots
 *.snapshots
 /tmp/faber-aeternus-snapshots/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs
+*.log

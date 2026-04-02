@@ -34,7 +34,7 @@ candle-core = { version = "0.8", optional = true }
 tempfile = { version = "3", optional = true }
 chrono = { version = "0.4", features = ["serde"] }
 futures = "0.3"
-tantivy = "0.22"
+tantivy = "0.25"
 regex = "1.10"
 petgraph = "0.6"
 ignore = "0.4"

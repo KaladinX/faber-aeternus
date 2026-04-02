@@ -30,7 +30,7 @@ tree-sitter = "0.25"
 anyhow = "1"
 async-trait = "0.1"
 reqwest = { version = "0.12", features = ["json", "stream"], optional = true }
-candle-core = { version = "0.8", optional = true }
+candle-core = { version = "0.10", optional = true }
 tempfile = { version = "3", optional = true }
 chrono = { version = "0.4", features = ["serde"] }
 futures = "0.3"

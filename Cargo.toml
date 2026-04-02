@@ -8,12 +8,14 @@ repository = "https://github.com/KaladinX/faber-aeternus"
 rust-version = "1.85"
 
 [features]
-default = ["cli"]
+default = ["cli", "full-ast"]
 cli = ["dep:clap", "dep:tracing-subscriber"]
 daemon = []
 library = []
 test = ["dep:tempfile"]
 sandbox-strict = []
+embeddings = ["candle-core"]
+full-ast = ["dep:tree-sitter-typescript", "dep:tree-sitter-javascript"]
 
 [dependencies]
 iocraft = "0.8"
@@ -30,8 +32,19 @@ async-trait = "0.1"
 reqwest = { version = "0.12", features = ["json", "stream"], optional = true }
 candle-core = { version = "0.8", optional = true }
 tempfile = { version = "3", optional = true }
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
 futures = "0.3"
+tantivy = "0.22"
+regex = "1.10"
+petgraph = "0.6"
+ignore = "0.4"
+lru = "0.12"
+toml = "0.8"
+tree-sitter-rust = "0.24"
+tree-sitter-python = "0.25"
+tree-sitter-go = "0.25"
+tree-sitter-javascript = { version = "0.25", optional = true }
+tree-sitter-typescript = { version = "0.23", optional = true }
 
 [dev-dependencies]
 tempfile = "3"
